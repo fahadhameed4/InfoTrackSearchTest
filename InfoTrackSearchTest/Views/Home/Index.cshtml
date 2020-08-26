@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<form asp-controller="Home" asp-action="Index">
+    <p>
+        Keywords: <input type="text" name="keywords">
+        Url: <input type="text" name="searchresult">
+        <input type="submit" value="Filter" />
+    </p>
+    <p>
+        @{
+
+            if(ViewData["countstring"]!=null)
+            ViewData["countstring"].ToString();
+                }
+    </p>
+</form>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>

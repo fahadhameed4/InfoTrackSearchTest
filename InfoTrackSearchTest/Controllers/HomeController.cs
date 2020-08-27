@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using InfoTrackSearchTest.Models;
 using InfoTrackSearchTest.Services;
 using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace InfoTrackSearchTest.Controllers
 {
@@ -25,21 +26,38 @@ namespace InfoTrackSearchTest.Controllers
         public IActionResult Index(string keywords, string searchresult)
         {
             var listoftags = new List<ATagscs>();
+            var countoftags=new System.Text.StringBuilder();
+            var result = string.Empty;
             if (!string.IsNullOrEmpty(keywords) && !string.IsNullOrEmpty(searchresult))
             {
                 try
                 {
-                    string url = _configuration.GetValue<string>("MySettings:SearchEngineGoogleUrl");
-                    listoftags = _searchEngineService.GetATagscs(url, searchresult, keywords).ToList();
-                    
+                   
+                    var numberofpages = _configuration.GetValue<int>("MySettings:NumberOfPages");
+                    for(int inc=1;inc<=numberofpages;inc++)
+                    {
+                        //this is only cover the static pages however it can be retrieve dynamically if we will use google/bing api 
+                        string url = _configuration.GetValue<string>("MySettings:SearchEngineGoogleUrl");
+                        if(inc==10)
+                        { url = url + "Page"  + inc + ".html"; }
+                        else
+                        url = url + "Page" + "0" + inc + ".html";
+                        listoftags = _searchEngineService.GetATagscs(url, searchresult, keywords).ToList();
+                        countoftags.Append(listoftags.Count.ToString());
+                        countoftags.Append(",");
+                    }
+                   
                 }
                
-                catch(Exception)
+                catch(Exception ex)
                 {
 
                 }
-
-                ViewData["countstring"] = listoftags.Count.ToString();
+                if(countoftags.Capacity>0)
+                {
+                     result = countoftags.ToString(0, countoftags.Length - 2);
+                }
+                ViewData["result"] = result;
             }
           
             return View();

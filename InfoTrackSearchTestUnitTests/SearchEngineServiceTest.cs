@@ -16,7 +16,7 @@ namespace InfoTrackSearchTestUnitTests
             _mockRepo = new Mock<ISearchEngineService>();
         }
         
-             [TestMethod]
+        [TestMethod]
         public void GetATagscs_Test()
         {
             var urlrequest = _mockRepo.Object.GetATagscs("","","");

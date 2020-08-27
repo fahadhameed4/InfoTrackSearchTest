@@ -2,6 +2,9 @@
     ViewData["Title"] = "Home Page";
 }
 
+@{
+    var listcount = ViewData["result"] as string;
+}
 
 <form asp-controller="Home" asp-action="Index">
     <p>
@@ -10,14 +13,8 @@
         <input type="submit" value="Filter" />
     </p>
     <p>
-        @{
-
-            if(ViewData["countstring"]!=null)
-            ViewData["countstring"].ToString();
-                }
+       @if(@listcount!=null)
+       @listcount.ToString()
     </p>
 </form>
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+

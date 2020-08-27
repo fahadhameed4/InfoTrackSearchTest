@@ -13,22 +13,33 @@ namespace InfoTrackSearchTest.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private ISearchEngineService _searchEngineService;
-        private IConfiguration _configuration;
-        public HomeController(ILogger<HomeController> logger, ISearchEngineService searchEngineService, IConfiguration configuration)
+        //private readonly ILogger<HomeController> _logger;
+        private readonly ISearchEngineService _searchEngineService;
+        private readonly IConfiguration _configuration;
+        public HomeController(ISearchEngineService searchEngineService, IConfiguration configuration)
         {
             _searchEngineService = searchEngineService;
-            _logger = logger;
+            //_logger = logger;
             _configuration = configuration;
         }
         public IActionResult Index(string keywords, string searchresult)
         {
-            if(!string.IsNullOrEmpty(keywords) && !string.IsNullOrEmpty(searchresult))
+            var listoftags = new List<ATagscs>();
+            if (!string.IsNullOrEmpty(keywords) && !string.IsNullOrEmpty(searchresult))
             {
-                string url = _configuration.GetValue<string>("MySettings:SearchEngineGoogleUrl");
-                var list = _searchEngineService.GetATagscs(url, searchresult, keywords).ToList();
-                ViewData["countstring"] = list.Count.ToString();
+                try
+                {
+                    string url = _configuration.GetValue<string>("MySettings:SearchEngineGoogleUrl");
+                    listoftags = _searchEngineService.GetATagscs(url, searchresult, keywords).ToList();
+                    
+                }
+               
+                catch(Exception)
+                {
+
+                }
+
+                ViewData["countstring"] = listoftags.Count.ToString();
             }
           
             return View();

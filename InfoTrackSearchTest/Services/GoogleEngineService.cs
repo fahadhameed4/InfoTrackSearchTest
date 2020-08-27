@@ -33,7 +33,6 @@ namespace InfoTrackSearchTest.Services
             htmlDoc.LoadHtml(urlResponse);
             //Find all A tags in the document
             var anchorNodes = htmlDoc.DocumentNode.SelectNodes("//a");
-
             foreach (var tag in anchorNodes)
             {
                 var hrefValue = tag.GetAttributeValue("href", "");
